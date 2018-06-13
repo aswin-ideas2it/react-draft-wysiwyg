@@ -12,7 +12,6 @@ import {
 } from "draft-js";
 import {
   changeDepth,
-  handleNewLine,
   blockRenderMap,
   getCustomStyleMap,
   extractInlineStyle,
@@ -34,6 +33,8 @@ import getHashtagDecorator from "../decorators/HashTag";
 import getBlockRenderFunc from "../renderer";
 import defaultToolbar from "../config/defaultToolbar";
 import localeTranslations from "../i18n";
+import handleNewLine from '../utils/KeyPress';
+
 import "./styles.css";
 import "../../css/Draft.css";
 
@@ -201,7 +202,7 @@ export default class WysiwygEditor extends Component {
     if (!onTab || !onTab(event)) {
       const editorState = changeDepth(
         this.state.editorState,
-        event.shiftKey ? -1 : 1,
+        event.shiftKey ? 1 : -1,
         4
       );
       if (editorState && editorState !== this.state.editorState) {
