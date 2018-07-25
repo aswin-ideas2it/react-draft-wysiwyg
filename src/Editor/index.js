@@ -202,7 +202,7 @@ export default class WysiwygEditor extends Component {
     if (!onTab || !onTab(event)) {
       const editorState = changeDepth(
         this.state.editorState,
-        event.shiftKey ? 1 : -1,
+        event.shiftKey ? -1 : 1,
         4
       );
       if (editorState && editorState !== this.state.editorState) {

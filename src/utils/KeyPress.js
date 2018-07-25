@@ -38,6 +38,18 @@ function handleHardNewlineEvent(editorState: EditorState): EditorState {
 }
 
 /**
+* Function to check is event was soft-newline
+* taken from : https://github.com/facebook/draft-js/blob/master/src/component/utils/isSoftNewlineEvent.js
+*/
+function isSoftNewlineEvent(e): boolean {
+  return e.which === 13 && (
+    e.getModifierState('Shift') ||
+    e.getModifierState('Alt') ||
+    e.getModifierState('Control')
+  );
+}
+
+/**
 * The function will handle keypress 'Enter' in editor. Following are the scenarios:
 *
 * 1. Shift+Enter, Selection Collapsed -> line break will be inserted.
@@ -50,7 +62,9 @@ function handleHardNewlineEvent(editorState: EditorState): EditorState {
 *      if current block not of type list, a new unstyled block will be inserted.
 */
 export default function handleNewLine(editorState: EditorState, event: Object): EditorState {
-  if (event.which === 13) {
+  if (isSoftNewlineEvent(event)) {
+    return handleHardNewlineEvent(editorState);
+  } else if (event.which === 13) {
     const selection = editorState.getSelection();
     if (selection.isCollapsed()) {
       return RichUtils.insertSoftNewline(editorState);
